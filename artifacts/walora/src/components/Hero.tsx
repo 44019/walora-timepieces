@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 
 export default function Hero() {
+  const [, setLocation] = useLocation();
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -41,12 +44,21 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.8, ease: "easeOut" }}
+          className="flex flex-col sm:flex-row items-center gap-4"
         >
           <Button 
             variant="outline" 
-            className="border-primary text-primary bg-background/20 backdrop-blur-sm hover:bg-primary hover:text-background rounded-none tracking-[0.2em] uppercase text-xs md:text-sm px-8 md:px-12 py-6 md:py-8 transition-all duration-500"
+            className="border-primary text-primary bg-primary/10 backdrop-blur-sm hover:bg-primary hover:text-background rounded-none tracking-[0.2em] uppercase text-xs md:text-sm px-8 md:px-12 py-6 md:py-8 transition-all duration-500"
+            onClick={() => setLocation("/timepieces")}
+            data-testid="hero-cta-timepieces"
+          >
+            View Available Timepieces
+          </Button>
+          <Button 
+            variant="ghost"
+            className="text-foreground/60 hover:text-primary border border-white/10 hover:border-primary/40 bg-transparent rounded-none tracking-[0.2em] uppercase text-xs md:text-sm px-8 md:px-12 py-6 md:py-8 transition-all duration-500"
             onClick={() => scrollTo("contact")}
-            data-testid="hero-cta"
+            data-testid="hero-cta-consult"
           >
             Book a Consultation
           </Button>

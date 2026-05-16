@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { useLocation } from "wouter";
 import waloraIcon from "@assets/logo_1778956539317.png";
 import { Button } from "@/components/ui/button";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +26,7 @@ export default function Navigation() {
   };
 
   const navLinks = [
+    { name: "Collections", id: "collections", href: "/timepieces" },
     { name: "Craftsmanship", id: "craftsmanship" },
     { name: "Heritage", id: "heritage" },
     { name: "Contact", id: "contact" },
@@ -47,7 +50,7 @@ export default function Navigation() {
             {navLinks.map((link) => (
               <button
                 key={link.name}
-                onClick={() => scrollTo(link.id)}
+                onClick={() => link.href ? setLocation(link.href) : scrollTo(link.id)}
                 className="text-sm font-sans tracking-widest uppercase text-foreground/80 hover:text-primary transition-colors duration-300"
                 data-testid={`link-${link.name.toLowerCase()}`}
               >
@@ -99,7 +102,7 @@ export default function Navigation() {
             {navLinks.map((link) => (
               <button
                 key={link.name}
-                onClick={() => scrollTo(link.id)}
+                onClick={() => { setMobileMenuOpen(false); link.href ? setLocation(link.href) : scrollTo(link.id); }}
                 className="text-2xl font-serif text-foreground hover:text-primary transition-colors duration-300"
                 data-testid={`mobile-link-${link.name.toLowerCase()}`}
               >
