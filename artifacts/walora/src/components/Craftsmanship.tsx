@@ -14,7 +14,7 @@ const features = [
   },
   {
     icon: ShieldCheck,
-    title: "10-Year Warranty",
+    title: "1-Year Warranty",
     description: "An unconditional guarantee on our uncompromising quality."
   },
   {
