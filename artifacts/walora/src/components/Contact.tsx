@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { MessageCircle, Instagram, Mail } from "lucide-react";
 
 export default function Contact() {
   const { toast } = useToast();
@@ -42,20 +43,51 @@ export default function Contact() {
             </p>
 
             <div className="space-y-8 font-sans font-light">
-              <div>
-                <p className="text-primary tracking-widest uppercase text-xs mb-2">Boutique</p>
-                <p className="text-foreground text-lg">The Dubai Mall, Fashion Avenue<br />Dubai, United Arab Emirates</p>
-              </div>
-              
-              <div>
-                <p className="text-primary tracking-widest uppercase text-xs mb-2">Concierge</p>
-                <p className="text-foreground text-lg">+971 50 000 0000</p>
-              </div>
+              <a
+                href="https://wa.me/923195710757"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-4 group"
+                data-testid="link-whatsapp"
+              >
+                <div className="mt-1 w-10 h-10 flex items-center justify-center border border-primary/30 group-hover:border-primary group-hover:bg-primary/10 transition-all duration-300 shrink-0">
+                  <MessageCircle className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <p className="text-primary tracking-widest uppercase text-xs mb-1">WhatsApp</p>
+                  <p className="text-foreground text-lg group-hover:text-primary transition-colors duration-300">0319 571 0757</p>
+                </div>
+              </a>
 
-              <div>
-                <p className="text-primary tracking-widest uppercase text-xs mb-2">Email</p>
-                <p className="text-foreground text-lg">contact@waloratimepieces.com</p>
-              </div>
+              <a
+                href="https://instagram.com/walora.official"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-4 group"
+                data-testid="link-instagram"
+              >
+                <div className="mt-1 w-10 h-10 flex items-center justify-center border border-primary/30 group-hover:border-primary group-hover:bg-primary/10 transition-all duration-300 shrink-0">
+                  <Instagram className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <p className="text-primary tracking-widest uppercase text-xs mb-1">Instagram</p>
+                  <p className="text-foreground text-lg group-hover:text-primary transition-colors duration-300">@walora.official</p>
+                </div>
+              </a>
+
+              <a
+                href="mailto:waloratimepieces@gmail.com"
+                className="flex items-start gap-4 group"
+                data-testid="link-email"
+              >
+                <div className="mt-1 w-10 h-10 flex items-center justify-center border border-primary/30 group-hover:border-primary group-hover:bg-primary/10 transition-all duration-300 shrink-0">
+                  <Mail className="h-4 w-4 text-primary" />
+                </div>
+                <div>
+                  <p className="text-primary tracking-widest uppercase text-xs mb-1">Email</p>
+                  <p className="text-foreground text-lg group-hover:text-primary transition-colors duration-300">waloratimepieces@gmail.com</p>
+                </div>
+              </a>
             </div>
           </motion.div>
 
