@@ -1,0 +1,38 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "0wNRtoajDfklCIwzXTW6E"
+uri = "file://artifacts/walora/public/images/hero.png"
+type = "image"
+title = "Luxury watch on black velvet"
+
+[[generated]]
+id = "J0Hl3bQ3ss9R9O5OJfjHe"
+uri = "file://artifacts/walora/public/images/about.png"
+type = "image"
+title = "Watch near crystal whisky glass"
+
+[[generated]]
+id = "_457fXruDHkgfiHQXE8FP"
+uri = "file://artifacts/walora/public/images/watch-noir.png"
+type = "image"
+title = "Midnight black watch"
+
+[[generated]]
+id = "GiMS-AoDThgVj7-CF3mUE"
+uri = "file://artifacts/walora/public/images/watch-aurum.png"
+type = "image"
+title = "Champagne gold watch"
+
+[[generated]]
+id = "fQ0CfZQjgpwQ0EiPk4rzV"
+uri = "file://artifacts/walora/public/images/watch-classique.png"
+type = "image"
+title = "White enamel watch"
+
+[[generated]]
+id = "lH4SYBu611_t8T7mPG7HJ"
+uri = "file://artifacts/walora/public/images/watch-celeste.png"
+type = "image"
+title = "Navy blue meteor watch"

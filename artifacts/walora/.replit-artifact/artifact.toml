@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "WALORA Timepieces"
+version = "1.0.0"
+id = "artifacts/walora"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19233
+
+[services.development]
+run = "pnpm --filter @workspace/walora run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/walora", "run", "build" ]
+publicDir = "artifacts/walora/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19233"
+BASE_PATH = "/"
