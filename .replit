@@ -30,3 +30,8 @@ externalPort = 80
 [[ports]]
 localPort = 19233
 externalPort = 3000
+
+[userenv]
+
+[userenv.shared]
+GMAIL_USER = "waloratimepieces@gmail.com"

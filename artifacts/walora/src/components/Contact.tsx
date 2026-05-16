@@ -10,19 +10,43 @@ export default function Contact() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate network request
-    setTimeout(() => {
-      setIsSubmitting(false);
-      toast({
-        title: "Enquiry Received",
-        description: "Our concierge will contact you shortly to arrange your consultation.",
+
+    const form = e.currentTarget;
+    const data = {
+      name: (form.elements.namedItem("name") as HTMLInputElement).value,
+      email: (form.elements.namedItem("email") as HTMLInputElement).value,
+      phone: (form.elements.namedItem("phone") as HTMLInputElement).value,
+      message: (form.elements.namedItem("message") as HTMLTextAreaElement).value,
+    };
+
+    try {
+      const res = await fetch(`${import.meta.env.BASE_URL}api/enquiry`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
       });
-      (e.target as HTMLFormElement).reset();
-    }, 1500);
+
+      if (res.ok) {
+        toast({
+          title: "Enquiry Received",
+          description: "Our concierge will contact you shortly to arrange your consultation.",
+        });
+        form.reset();
+      } else {
+        throw new Error("Server error");
+      }
+    } catch {
+      toast({
+        title: "Something went wrong",
+        description: "Please try reaching us directly on WhatsApp or email.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
