@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, X } from "lucide-react";
+import { ArrowLeft, X, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 
@@ -212,10 +214,22 @@ const brandColors: Record<string, string> = {
   "Cartier": "text-rose-400",
 };
 
+type Watch = typeof timepieces[0];
+
+interface OrderForm {
+  name: string;
+  phone: string;
+  city: string;
+  notes: string;
+}
+
 export default function TimepiecesPage() {
   const [, setLocation] = useLocation();
-  const [selected, setSelected] = useState<typeof timepieces[0] | null>(null);
+  const [selected, setSelected] = useState<Watch | null>(null);
+  const [ordering, setOrdering] = useState<Watch | null>(null);
   const [filter, setFilter] = useState("All");
+  const [form, setForm] = useState<OrderForm>({ name: "", phone: "", city: "", notes: "" });
+  const formRef = useRef<HTMLFormElement>(null);
 
   const brands = ["All", ...Array.from(new Set(timepieces.map(w => w.brand)))];
   const filtered = filter === "All" ? timepieces : timepieces.filter(w => w.brand === filter);
@@ -225,9 +239,38 @@ export default function TimepiecesPage() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = selected ? "hidden" : "";
+    const isOpen = !!selected || !!ordering;
+    document.body.style.overflow = isOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
-  }, [selected]);
+  }, [selected, ordering]);
+
+  const openOrderForm = (watch: Watch) => {
+    setSelected(null);
+    setForm({ name: "", phone: "", city: "", notes: "" });
+    setTimeout(() => setOrdering(watch), 150);
+  };
+
+  const submitOrder = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!ordering) return;
+
+    const watchLabel = `${ordering.brand} ${ordering.name} — ${ordering.variant} (${ordering.price})`;
+    const message = [
+      `*New Order — WALORA Timepieces*`,
+      ``,
+      `*Watch:* ${watchLabel}`,
+      ``,
+      `*Customer Details:*`,
+      `Name: ${form.name}`,
+      `Phone: ${form.phone}`,
+      `City: ${form.city}`,
+      form.notes ? `Notes: ${form.notes}` : "",
+    ].filter(l => l !== undefined).join("\n");
+
+    const waUrl = `https://wa.me/923195710757?text=${encodeURIComponent(message)}`;
+    window.open(waUrl, "_blank");
+    setOrdering(null);
+  };
 
   return (
     <div className="bg-background min-h-screen text-foreground">
@@ -440,22 +483,126 @@ export default function TimepiecesPage() {
                       <span className="text-primary font-serif text-2xl">{selected.price}</span>
                     </div>
                     <Button
-                      className="w-full bg-transparent border border-primary text-primary hover:bg-primary hover:text-background rounded-none tracking-[0.2em] uppercase text-xs py-6 transition-all duration-300"
-                      onClick={() => {
-                        setSelected(null);
-                        setLocation("/");
-                        setTimeout(() => {
-                          const el = document.getElementById("contact");
-                          if (el) el.scrollIntoView({ behavior: "smooth" });
-                        }, 300);
-                      }}
-                      data-testid={`btn-enquire-${selected.id}`}
+                      className="w-full bg-primary border border-primary text-background hover:bg-primary/90 rounded-none tracking-[0.2em] uppercase text-xs py-6 transition-all duration-300 flex items-center justify-center gap-2"
+                      onClick={() => openOrderForm(selected)}
+                      data-testid={`btn-order-${selected.id}`}
                     >
-                      Enquire Now
+                      <MessageCircle className="h-4 w-4" />
+                      Place Order via WhatsApp
                     </Button>
                   </div>
                 </div>
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Order Form Modal */}
+      <AnimatePresence>
+        {ordering && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 md:p-8"
+            onClick={() => setOrdering(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 40, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.97 }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-[#0d0d0d] border border-primary/30 max-w-lg w-full"
+              onClick={e => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-8 pt-8 pb-6 border-b border-white/5">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <MessageCircle className="h-4 w-4 text-primary" />
+                    <span className="text-primary text-xs tracking-widest uppercase font-sans">WhatsApp Order</span>
+                  </div>
+                  <h3 className="text-xl font-serif text-foreground">{ordering.brand} {ordering.name}</h3>
+                  <p className="text-foreground/50 text-sm font-sans">{ordering.variant} · {ordering.price}</p>
+                </div>
+                <button
+                  onClick={() => setOrdering(null)}
+                  className="text-foreground/40 hover:text-primary transition-colors"
+                  data-testid="btn-close-order"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* Form */}
+              <form ref={formRef} onSubmit={submitOrder} className="px-8 py-6 space-y-5">
+                <p className="text-foreground/50 text-xs font-sans leading-relaxed">
+                  Fill in your details below. When you tap <span className="text-primary">Send Order</span>, WhatsApp will open with your complete order — ready to send directly to WALORA.
+                </p>
+
+                <div className="space-y-1">
+                  <label className="text-xs uppercase tracking-widest text-foreground/50 font-sans">Full Name *</label>
+                  <Input
+                    required
+                    value={form.name}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    placeholder="e.g. Ahmed Khan"
+                    className="bg-background border-white/10 rounded-none focus-visible:ring-primary h-11 text-foreground"
+                    data-testid="input-order-name"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs uppercase tracking-widest text-foreground/50 font-sans">Phone Number *</label>
+                  <Input
+                    required
+                    type="tel"
+                    value={form.phone}
+                    onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
+                    placeholder="e.g. 0300 1234567"
+                    className="bg-background border-white/10 rounded-none focus-visible:ring-primary h-11 text-foreground"
+                    data-testid="input-order-phone"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs uppercase tracking-widest text-foreground/50 font-sans">City *</label>
+                  <Input
+                    required
+                    value={form.city}
+                    onChange={e => setForm(f => ({ ...f, city: e.target.value }))}
+                    placeholder="e.g. Lahore"
+                    className="bg-background border-white/10 rounded-none focus-visible:ring-primary h-11 text-foreground"
+                    data-testid="input-order-city"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs uppercase tracking-widest text-foreground/50 font-sans">Additional Notes</label>
+                  <Textarea
+                    value={form.notes}
+                    onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
+                    placeholder="Any special requests, preferred delivery time, etc."
+                    className="bg-background border-white/10 rounded-none focus-visible:ring-primary min-h-[80px] text-foreground resize-none text-sm"
+                    data-testid="input-order-notes"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-[#25D366] hover:bg-[#1ebe5d] text-white border-0 rounded-none tracking-[0.15em] uppercase text-xs py-6 transition-all duration-300 flex items-center justify-center gap-2 font-sans"
+                  data-testid="btn-submit-order"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Send Order on WhatsApp
+                </Button>
+
+                <p className="text-center text-foreground/30 text-xs font-sans">
+                  You will be redirected to WhatsApp to confirm your order
+                </p>
+              </form>
             </motion.div>
           </motion.div>
         )}
