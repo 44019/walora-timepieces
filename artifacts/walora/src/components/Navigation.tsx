@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import waloraIcon from "@assets/logo_1778955989974.png";
+import waloraIcon from "@assets/logo_1778956539317.png";
 import { Button } from "@/components/ui/button";
 
 export default function Navigation() {
