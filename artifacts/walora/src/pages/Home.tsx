@@ -14,16 +14,10 @@ export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    const hasSeenSplash = sessionStorage.getItem("walora_splash_seen");
-    if (hasSeenSplash) {
+    const timer = setTimeout(() => {
       setShowSplash(false);
-    } else {
-      const timer = setTimeout(() => {
-        setShowSplash(false);
-        sessionStorage.setItem("walora_splash_seen", "true");
-      }, 2500);
-      return () => clearTimeout(timer);
-    }
+    }, 2800);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
