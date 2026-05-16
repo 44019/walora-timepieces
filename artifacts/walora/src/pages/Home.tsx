@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
-import Timepieces from "@/components/Timepieces";
 import Craftsmanship from "@/components/Craftsmanship";
 import Heritage from "@/components/Heritage";
 import Testimonials from "@/components/Testimonials";
@@ -38,7 +37,6 @@ export default function Home() {
         <main>
           <Hero />
           <About />
-          <Timepieces />
           <Craftsmanship />
           <Heritage />
           <Testimonials />

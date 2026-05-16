@@ -45,10 +45,10 @@ export default function Hero() {
           <Button 
             variant="outline" 
             className="border-primary text-primary bg-background/20 backdrop-blur-sm hover:bg-primary hover:text-background rounded-none tracking-[0.2em] uppercase text-xs md:text-sm px-8 md:px-12 py-6 md:py-8 transition-all duration-500"
-            onClick={() => scrollTo("timepieces")}
+            onClick={() => scrollTo("contact")}
             data-testid="hero-cta"
           >
-            View Available Timepieces
+            Book a Consultation
           </Button>
         </motion.div>
       </div>

@@ -24,7 +24,6 @@ export default function Navigation() {
   };
 
   const navLinks = [
-    { name: "Collections", id: "timepieces" },
     { name: "Craftsmanship", id: "craftsmanship" },
     { name: "Heritage", id: "heritage" },
     { name: "Contact", id: "contact" },
