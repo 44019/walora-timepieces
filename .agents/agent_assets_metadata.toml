@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "0wNRtoajDfklCIwzXTW6E"
@@ -36,3 +35,9 @@ id = "lH4SYBu611_t8T7mPG7HJ"
 uri = "file://artifacts/walora/public/images/watch-celeste.png"
 type = "image"
 title = "Navy blue meteor watch"
+
+[[outputs]]
+id = "H4XRnNTHHsJriiSk4supb"
+uri = "file://walora-website.tar.gz"
+type = "unspecified"
+title = "WALORA Timepieces — Full Website"
